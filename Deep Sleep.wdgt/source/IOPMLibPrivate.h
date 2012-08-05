@@ -151,22 +151,22 @@ enum {
     kIOPMAssertionEnable  = 255
  };
 
-typedef int IOPMAssertionID;
-
-    /*!
-@function IOPMAssertionCreate
-@abstract Dynamically requests a system behavior from the power management system.
-@discussion No special privileges necessary to make this call - any process may
-        activate a power profile.
-@param assertion The CFString profile to request from the PM system.
-@param level Pass kIOPMProfileEnable or kIOPMProfileDisable.
-@param assertion_id On success, a unique id will be returned in this parameter.
-@result Returns kIOReturnSuccess on success, any other return indicates
-        PM could not successfully activate the specified profile.
-     */
-IOReturn IOPMAssertionCreate(CFStringRef  assertion, 
-                           int level,
-                           IOPMAssertionID *assertion_id);                           
+//typedef int IOPMAssertionID;
+//
+//    /*!
+//@function IOPMAssertionCreate
+//@abstract Dynamically requests a system behavior from the power management system.
+//@discussion No special privileges necessary to make this call - any process may
+//        activate a power profile.
+//@param assertion The CFString profile to request from the PM system.
+//@param level Pass kIOPMProfileEnable or kIOPMProfileDisable.
+//@param assertion_id On success, a unique id will be returned in this parameter.
+//@result Returns kIOReturnSuccess on success, any other return indicates
+//        PM could not successfully activate the specified profile.
+//     */
+//IOReturn IOPMAssertionCreate(CFStringRef  assertion, 
+//                           int level,
+//                           IOPMAssertionID *assertion_id);                           
                            
     /*!
 @function IOPMAssertionRelease
