@@ -1,6 +1,10 @@
+/* Deep Sleep for Mac OS 10.8 */
+/* Toshiya NISHIO (toshiya240@gmail.com), 12/08/05 */
+#define VERSION "1.2tn1 (12/08/05)"
+
 /* Deep Sleep for Mac OS 10.4.3 and above */
 /* M. Beaumel (cochonou@fastmail.fm), 09/08/10 */
-#define VERSION "1.2 (09/08/10)"
+//#define VERSION "1.2 (09/08/10)"
 
 /*
  * Copyright (C) 2010 M. Beaumel
@@ -22,7 +26,10 @@
 #include <IOKit/IOKitLib.h>
 #include <IOKit/pwr_mgt/IOPMLib.h>
 /* #include <IOKit/pwr_mgt/IOPMLibPrivate.h> */
+// XXX
+#define int uint32_t
 #include "IOPMLibPrivate.h"
+#undef int
 #include <IOKit/ps/IOPowerSources.h>
 /* #include <IOKit/ps/IOPowerSourcesPrivate.h> */
 #include "IOPowerSourcesPrivate.h"
@@ -263,26 +270,14 @@ int main (int argc, const char * argv[])
 	if (sysctl(vmmib, 2, &swap, &swlen, NULL, 0) == -1) {                                                                       /* Get the current virtual memory parameters */
 		printf("Failed to get the virtual memory information\n");                                                                  /* On failure: quit */
 		return 1;
-	} else {	
-		if (swap.xsu_encrypted) {                                                                                                  /* Check if the virtual memory is encrypted */
-			default_mode = 7;
-			if (target_suspend == dump) {
-				target_mode = default_mode;                                                                                               /* If so, we will sleep with hibernate mode 7 for safe hardware suspend */
-			} else /*if (target_suspend == soft)*/ {
-				target_mode = 5;                                                                                                          /* or with hibernate mode 5 for software suspend */
-			}                                                                                                          
-			if (debug) printf("VM is encrypted\n");
-		}
-		else {
-			default_mode = 3;
-			if (target_suspend == dump) {
-				target_mode = default_mode;                                                                                               /* else, we will use the regular mode 3 for safe hardware suspsend */
-			} else /*if (target_suspend == soft)*/ {	
-				target_mode = 1;                                                                                                          /* or the regular mode 1 for software suspsend */
-			}
-			if (debug) printf("VM is not encrypted\n");
-		}           
-		if (target_suspend == hard)                                                                                                 /* If we only want to perform basic hardware suspend */                                      
+	} else {
+        default_mode = 3;
+        if (target_suspend == dump) {
+            target_mode = default_mode;                                                                                               /* we will use the regular mode 3 for safe hardware suspsend */
+        } else /*if (target_suspend == soft)*/ {
+            target_mode = 25;                                                                                                          /* or the regular mode 25 for software suspsend */
+        }        
+		if (target_suspend == hard)                                                                                                 /* If we only want to perform basic hardware suspend */
 			target_mode = 0;                                                                                                            /* we will sleep with hibernate mode 0 */
 		if (debug) printf("target mode: %d\n", target_mode);
 	}
